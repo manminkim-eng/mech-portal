@@ -115,6 +115,30 @@ td.num{font-family:var(--f-mono);font-size:.84rem;white-space:nowrap}
 .ft a{color:var(--mech-lt)}
 .ft .mono{font-family:var(--f-mono)}
 
+/* 앱 설치 (v1.0.2) */
+.tab-inst{font-weight:700}
+.tab-inst svg{width:15px;height:15px;flex-shrink:0}
+.pwa-bar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:40;width:min(560px,calc(100% - 32px));display:flex;align-items:center;gap:12px;
+  padding:12px 14px;background:var(--bg-card);border:1px solid var(--line2);border-left:3px solid var(--gold);border-radius:var(--radius);box-shadow:0 12px 32px rgba(0,0,0,.5)}
+.pwa-bar img{width:40px;height:40px;border-radius:8px;flex-shrink:0}
+.pwa-bar-t{flex:1;min-width:0;font-size:.88rem;line-height:1.5}
+.pwa-bar-t b{display:block;color:var(--t-high);font-size:.95rem}
+.pwa-bar button,.ios-x,.ios-ok{font:600 .88rem var(--f-kr);min-height:44px;padding:0 14px;border-radius:8px;cursor:pointer}
+.pwa-yes,.ios-ok{background:var(--gold);color:#0b1220;border:0}
+.pwa-yes:hover,.ios-ok:hover{background:var(--gold-lt)}
+.pwa-no,.ios-x{background:transparent;color:var(--t-sub);border:1px solid var(--line2)}
+.pwa-no:hover,.ios-x:hover{color:var(--t-high);border-color:var(--mech)}
+.ios-guide{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(5,9,18,.72)}
+.ios-box{width:min(440px,100%);background:var(--bg-card);border:1px solid var(--line2);border-radius:var(--radius);box-shadow:0 16px 48px rgba(0,0,0,.6);padding:22px 22px 18px}
+.ios-box h2{font-size:1.12rem;font-weight:800;color:var(--t-high);margin-bottom:12px}
+.ios-box ol{list-style:none;counter-reset:s;display:grid;gap:10px;margin-bottom:12px}
+.ios-box li{counter-increment:s;display:flex;gap:10px;align-items:flex-start;font-size:.92rem}
+.ios-box li::before{content:counter(s);flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--mech);color:#0b1220;font:700 .8rem var(--f-mono);display:flex;align-items:center;justify-content:center;margin-top:1px}
+.ios-box li svg{width:16px;height:16px;vertical-align:-3px;color:var(--mech-lt)}
+.ios-note{font-size:.82rem;color:var(--t-sub);border-top:1px solid var(--line);padding-top:10px;margin-bottom:14px}
+.ios-act{display:flex;gap:8px;justify-content:flex-end}
+[hidden]{display:none!important}
+
 /* 5단계 반응형 */
 @media (max-width:1240px){.wrap{max-width:100%}}
 @media (max-width:1024px){.grid{grid-template-columns:repeat(2,1fr)}}
@@ -127,11 +151,13 @@ td.num{font-family:var(--f-mono);font-size:.84rem;white-space:nowrap}
   .tab{min-height:48px}.tc-man{min-height:48px}
   .grp-n{margin-left:0;width:100%}
   .ft a{display:inline-flex;align-items:center;min-height:48px}
+  .pwa-bar{bottom:12px;flex-wrap:wrap}.pwa-bar img{display:none}.pwa-bar-t{flex-basis:100%}
+  .pwa-bar button,.ios-x,.ios-ok{min-height:48px;flex:1}
 }
 @media (max-width:480px){.brand-e{letter-spacing:.2em}.tabs{justify-content:flex-start}}
 @media (max-width:400px){.tcard{padding:18px 16px 14px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
-@media print{.bg,.tabs{display:none}body{background:#fff;color:#111}.tcard,.tbl-wrap,.st{background:#fff;box-shadow:none;break-inside:avoid}
+@media print{.bg,.tabs,.pwa-bar,.ios-guide{display:none!important}body{background:#fff;color:#111}.tcard,.tbl-wrap,.st{background:#fff;box-shadow:none;break-inside:avoid}
   .tc-name,.ttl,.law-hd h2,tbody th,.st-n,.brand-n{color:#111}.grp.off{display:block}}
 </style>
 </head>
@@ -162,6 +188,7 @@ td.num{font-family:var(--f-mono);font-size:.84rem;white-space:nowrap}
   <button class="tab on" data-tab="all" role="tab" aria-selected="true">전체 <span class="tn">8</span></button><button class="tab" data-tab="plumb" role="tab" aria-selected="false">위생·배수 <span class="tn">3</span></button><button class="tab" data-tab="air" role="tab" aria-selected="false">공조·환기 <span class="tn">3</span></button><button class="tab" data-tab="heat" role="tab" aria-selected="false">열원·반송 <span class="tn">2</span></button>
   <a class="tab tab-law" href="#law">근거 법령·기준</a>
   <a class="tab tab-law tab-man" href="./manual/" target="_blank" rel="noopener" aria-label="포털 사용자 매뉴얼 (새 창)">사용자 매뉴얼</a>
+  <button class="tab tab-man tab-inst" id="pwa-inst" type="button" hidden aria-label="이 포털을 앱으로 설치"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>앱 설치</button>
 </nav>
 
   <section class="grp" id="g-plumb" data-g="plumb">
@@ -287,8 +314,27 @@ td.num{font-family:var(--f-mono);font-size:.84rem;white-space:nowrap}
 
 <footer class="ft">
   <span>© 2026 김만민 건축사 · (주)대성건축사사무소 — <a href="https://manminkim-eng.github.io/KIMMANMIN/" target="_blank" rel="noopener">MANMIN 홈페이지</a></span>
-  <span class="mono">MECH PORTAL · Ver 1.0.1</span>
+  <span class="mono">MECH PORTAL · Ver 1.0.2</span>
 </footer>
+</div>
+
+<div class="pwa-bar" id="pwa-bar" role="region" aria-label="앱 설치 안내" hidden>
+  <img src="icons/icon-96.png" alt="" width="40" height="40">
+  <div class="pwa-bar-t"><b>기계설비 포털을 앱으로 설치</b>홈 화면에서 바로 열고, 오프라인에서도 포털을 볼 수 있습니다.</div>
+  <button class="pwa-no" id="pwa-no" type="button">닫기</button>
+  <button class="pwa-yes" id="pwa-yes" type="button">설치</button>
+</div>
+
+<div class="ios-guide" id="ios-guide" role="dialog" aria-modal="true" aria-labelledby="ios-t" hidden>
+  <div class="ios-box">
+    <h2 id="ios-t">아이폰 · 아이패드에서 설치</h2>
+    <ol>
+      <li><span>화면 아래(아이패드는 위)의 <b>공유</b> 단추 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M7 8l5-5 5 5"/><path d="M5 12v8h14v-8"/></svg>를 누릅니다.</span></li>
+      <li><span>목록에서 <b>홈 화면에 추가</b>를 고른 뒤 <b>추가</b>를 누릅니다.</span></li>
+    </ol>
+    <p class="ios-note">설치되는 범위는 이 포털입니다. 카드에서 연 계산서는 앱 안의 브라우저 창으로 열리며, 계산서도 앱으로 쓰려면 각 계산서 화면에서 같은 방법으로 설치합니다.</p>
+    <div class="ios-act"><button class="ios-ok" id="ios-ok" type="button">확인</button></div>
+  </div>
 </div>
 
 <script>
@@ -305,6 +351,32 @@ td.num{font-family:var(--f-mono);font-size:.84rem;white-space:nowrap}
     m.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' ')go(m,ev);});
   });
   if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){});});}
+
+  /* 앱 설치 (v1.0.2) — 지원 브라우저: beforeinstallprompt · 아이폰/아이패드: 안내 상자 · 설치된 앱 화면: 숨김 */
+  var inst=document.getElementById('pwa-inst'),bar=document.getElementById('pwa-bar'),
+      yes=document.getElementById('pwa-yes'),no=document.getElementById('pwa-no'),
+      ios=document.getElementById('ios-guide'),iosOk=document.getElementById('ios-ok'),dp=null,last=null;
+  var standalone=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
+  var isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  function ss(k,v){try{if(v===undefined)return sessionStorage.getItem(k);sessionStorage.setItem(k,v);}catch(e){return null;}}
+  function showBar(){if(standalone||ss('mp-inst-bar'))return;setTimeout(function(){if(!standalone&&(dp||isIOS))bar.hidden=false;},2000);}
+  function hideAll(){inst.hidden=true;bar.hidden=true;}
+  function openIOS(){last=document.activeElement;bar.hidden=true;ios.hidden=false;iosOk.focus();}
+  function closeIOS(){ios.hidden=true;if(last&&last.focus)last.focus();}
+  function doInstall(){
+    if(dp){bar.hidden=true;dp.prompt();dp.userChoice.then(function(c){if(c.outcome==='accepted')hideAll();dp=null;if(c.outcome!=='accepted')inst.hidden=true;});}
+    else if(isIOS){openIOS();}
+  }
+  if(!standalone){
+    window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;inst.hidden=false;showBar();});
+    if(isIOS){inst.hidden=false;showBar();}
+  }
+  window.addEventListener('appinstalled',function(){dp=null;hideAll();});
+  inst.addEventListener('click',doInstall);yes.addEventListener('click',doInstall);
+  no.addEventListener('click',function(){bar.hidden=true;ss('mp-inst-bar','1');});
+  iosOk.addEventListener('click',closeIOS);
+  ios.addEventListener('click',function(e){if(e.target===ios)closeIOS();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!ios.hidden)closeIOS();});
 })();
 </script>
 </body>

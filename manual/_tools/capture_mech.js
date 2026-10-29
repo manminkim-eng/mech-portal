@@ -2,6 +2,9 @@
 const {chromium}=require('playwright');const fs=require('fs');const path=require('path');const {setup,server}=require('./serve');
 const repo=path.resolve(process.argv[2]),out=path.resolve(process.argv[3]);fs.mkdirSync(out,{recursive:true});
 const VW=1440,VH=900,DSF=1.25,PORT=8961;
+// v1.0.2 — 설치 지원 브라우저 모사(beforeinstallprompt) · 안내 띠는 해당 캡처에서만 표시
+const FAKE=`window.__fire=function(){var e=new Event('beforeinstallprompt');e.prompt=function(){};e.userChoice=Promise.resolve({outcome:'dismissed'});window.dispatchEvent(e);};`;
+const HIDEBAR='.pwa-bar{display:none!important}html{scroll-behavior:auto!important}';
 const HELP=`window.__vis=e=>e&&e.getClientRects().length>0;
 window.__find=sel=>{if(sel.startsWith('nth:')){const [q,i]=sel.slice(4).split('|');return [...document.querySelectorAll(q)].filter(__vis)[+i]||null;}
  if(sel.startsWith('card:')){const t=sel.slice(5);return [...document.querySelectorAll('.tcard')].find(c=>c.textContent.includes(t)&&__vis(c))||null;}
@@ -11,19 +14,20 @@ window.__tab=t=>{document.querySelector('.tab[data-tab="'+t+'"]').click();};`;
 const SHOTS=[
  {id:'s01_overview',pre:"__tab('all');window.scrollTo(0,0)",clip:'viewport',m:[['.pill','근거 조문 대조일 · 고시 번호'],['.ttl','포털 이름'],['.stats','요약 5칸'],['.tabs','분류 탭 · 근거 · 매뉴얼'],['nth:.tcard|0','계산서 카드']]},
  {id:'s02_header',clip:'.hd',m:[['.pill','근거 조문 대조일'],['.brand','ENGINEER KIM MANMIN'],['.ttl','기계설비 계산서 통합 포털'],['.lead','포털 설명']]},
- {id:'s03_tabs',clip:'.tabs',m:[['nth:.tab|0','전체 8'],['nth:.tab|1','위생·배수 3'],['nth:.tab|2','공조·환기 3'],['nth:.tab|3','열원·반송 2'],['nth:.tab|4','근거 법령·기준'],['.tab-man','사용자 매뉴얼']]},
+ {id:'s03_tabs',clip:'.tabs',m:[['nth:.tab|0','전체 8'],['nth:.tab|1','위생·배수 3'],['nth:.tab|2','공조·환기 3'],['nth:.tab|3','열원·반송 2'],['nth:.tab|4','근거 법령·기준'],['nth:.tab-man|0','사용자 매뉴얼'],['#pwa-inst','앱 설치']]},
  {id:'s04_plumb',clip:'#g-plumb',m:[['card:우수','20 건물 우수관경'],['card:위생배관','21 위생배관 관경'],['card:급탕','25 급탕량 · 보일러']]},
  {id:'s05_air',clip:'#g-air',m:[['card:냉온수','22 냉온수 배관'],['card:덕트','23 공조 덕트'],['card:환기','26 기계환기설비']]},
  {id:'s06_heat',clip:'#g-heat',m:[['card:펌프','24 설비 펌프'],['card:부하계산','27 냉난방 부하계산']]},
  {id:'s07_card',clip:'nth:.tcard|0',m:[['nth:.tc-no|0','공종 번호(M · 폴더 번호)'],['nth:.tc-ver|0','계산서 현재 버전'],['nth:.tc-name|0','계산서 이름'],['nth:.tc-desc|0','계산 내용'],['nth:.tc-chips|0','근거 기준 칩'],['nth:.tc-man|0','사용자 매뉴얼(새 창)'],['nth:.tc-go|0','계산서 열기']]},
  {id:'s08_law',clip:'#law',m:[['row:설비기준','설비규칙 — 2026-08-24 시행'],['row:기계설비 기술기준','기계설비 기술기준 — 제2026-360호'],['row:에너지절약','에너지절약설계기준 — 제2026-360호'],['row:KDS 31','KDS 31 설비 설계기준'],['row:참고 기준','참고 기준'],['.note','안내 — 수치 기준은 계산서']]},
+ {id:'s13_install_bar',pre:"document.getElementById('mm-hidebar').disabled=true;window.scrollTo(0,0)",wait:500,clip:'#pwa-bar',post:"document.getElementById('mm-hidebar').disabled=false",m:[['.pwa-bar-t','설치 안내'],['#pwa-no','닫기 — 이 세션 동안 다시 띄우지 않음'],['#pwa-yes','설치 — 브라우저 설치 창']]},
  {id:'s09_air_tab',pre:"__tab('air');window.scrollTo(0,0)",wait:600,clip:'viewport',post:"__tab('all')",m:[['nth:.tab|2','공조·환기만 보기'],['#g-air','공조·환기 카드 3장']]},
 ];
 (async()=>{
  const s=await server(repo,PORT);const b=await chromium.launch();
  const ctx=await b.newContext({viewport:{width:VW,height:VH},deviceScaleFactor:DSF,serviceWorkers:'block',locale:'ko-KR'});await setup(ctx);
- const pg=await ctx.newPage();const errs=[];pg.on('pageerror',e=>errs.push(e.message));
- await pg.goto(`http://127.0.0.1:${PORT}/index.html`);await pg.evaluate(()=>document.fonts.ready);await pg.waitForTimeout(1200);await pg.evaluate(HELP);
+ const pg=await ctx.newPage();await pg.addInitScript(FAKE);const errs=[];pg.on('pageerror',e=>errs.push(e.message));
+ await pg.goto(`http://127.0.0.1:${PORT}/index.html`);await pg.addStyleTag({content:HIDEBAR}).then(h=>h.evaluate(e=>e.id='mm-hidebar'));await pg.evaluate(()=>document.fonts.ready);await pg.evaluate(()=>__fire());await pg.waitForTimeout(2400);await pg.evaluate(HELP);
  const meta={};
  for(const S of SHOTS){
   if(S.pre){try{await pg.evaluate(S.pre);}catch(e){errs.push(S.id+' pre '+e.message);}}
@@ -47,13 +51,17 @@ const SHOTS=[
  // 홈페이지 카드용 전체 화면 1800×1125 (1440×900 × 1.25)
  await pg.evaluate(()=>window.scrollTo(0,0));await pg.waitForTimeout(300);
  await pg.screenshot({path:path.join(out,'_full_1440.png'),clip:{x:0,y:0,width:VW,height:VH}});
- const mctx=await b.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,serviceWorkers:'block',isMobile:true,hasTouch:true,locale:'ko-KR'});await setup(mctx);
- const mp=await mctx.newPage();await mp.goto(`http://127.0.0.1:${PORT}/index.html`);await mp.waitForTimeout(1200);
+ const mctx=await b.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,serviceWorkers:'block',isMobile:true,hasTouch:true,locale:'ko-KR',userAgent:'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1'});await setup(mctx);
+ const mp=await mctx.newPage();await mp.goto(`http://127.0.0.1:${PORT}/index.html`);await mp.addStyleTag({content:HIDEBAR}).then(h=>h.evaluate(e=>e.id='mm-hidebar'));await mp.waitForTimeout(2400);
  await mp.screenshot({path:path.join(out,'s10_mobile_top.png')});meta['s10_mobile_top']={w:390,h:844,marks:[]};
  await mp.evaluate(()=>{const e=document.getElementById('g-air');window.scrollTo(0,e.getBoundingClientRect().top+scrollY-12);});await mp.waitForTimeout(400);
  await mp.screenshot({path:path.join(out,'s11_mobile_card.png')});meta['s11_mobile_card']={w:390,h:844,marks:[]};
  await mp.evaluate(()=>{const e=document.getElementById('law');window.scrollTo(0,e.getBoundingClientRect().top+scrollY-12);});await mp.waitForTimeout(400);
  await mp.screenshot({path:path.join(out,'s12_mobile_law.png')});meta['s12_mobile_law']={w:390,h:844,marks:[]};
+
+ await mp.evaluate(()=>{window.scrollTo(0,0);document.getElementById('pwa-inst').click();});await mp.waitForTimeout(400);
+ await mp.screenshot({path:path.join(out,'s14_ios_guide.png')});meta['s14_ios_guide']={w:390,h:844,marks:[]};
+ await mp.evaluate(()=>document.getElementById('ios-ok').click());
  const mob=await mp.evaluate(()=>({page:document.documentElement.scrollWidth,vw:innerWidth}));
  fs.writeFileSync(path.join(out,'_marks.json'),JSON.stringify(meta,null,1));
  const miss=[];Object.entries(meta).forEach(([k,v])=>v.marks.forEach(m=>{if(m.miss)miss.push(k+':'+m.miss);else if(m.x<0||m.y<0||m.x+m.w>100.5||m.y+m.h>100.5||m.w<=0||m.h<=0)miss.push(k+':OUT '+m.label);}));

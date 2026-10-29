@@ -13,8 +13,8 @@ with contextlib.redirect_stdout(io.StringIO()):
     D = runpy.run_path(os.path.join(HERE, '..', '..', '_tools', 'build_portal.py'))
 TOOLS, GROUPS, LAWS, APPVER, CHECKED = D['TOOLS'], D['GROUPS'], D['LAWS'], D['VER'], D['CHECKED']
 
-VER, DATE = 'Ver-1.0', '2026-10-30'
-PDF = '기계설비통합포털_사용자매뉴얼_Ver-1.0.pdf'
+VER, DATE = 'Ver-1.1', '2026-10-30'
+PDF = '기계설비통합포털_사용자매뉴얼_Ver-1.1.pdf'
 APP_URL = 'https://manminkim-eng.github.io/mech-portal/'
 APP = '기계설비 계산서 통합 포털'
 G = 'https://manminkim-eng.github.io/'
@@ -26,6 +26,7 @@ K = lambda t: '<div class="k1">' + t + '</div>'
 BR = lambda t: '<div class="brk">' + t + '</div>'
 EXTRA_CSS = """<style>
 #fig-s07_card{max-width:420px}
+#fig-s13_install_bar{max-width:640px}
 .k1 td:first-child,.k1 th:first-child{white-space:nowrap}
 .tri{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
 @media (max-width:760px){.tri{grid-template-columns:1fr}}
@@ -34,6 +35,7 @@ EXTRA_CSS = """<style>
   figure.shot .frame{width:fit-content;max-width:100%}
   figure.shot img{width:auto;height:auto;max-width:100%;max-height:118mm}
   figure.narrow img{max-height:105mm}
+  #fig-s13_install_bar .frame{width:120mm!important}#fig-s13_install_bar img{width:120mm!important;max-height:none}
   .tri{grid-template-columns:repeat(3,1fr)}
   .brk .tbl{break-inside:auto}.brk tr{break-inside:avoid}.brk thead{display:table-header-group}
 }
@@ -46,7 +48,7 @@ TOC = [
  ('ch0', '0. 이 매뉴얼에 대하여', []),
  ('ch1', '1. 한눈에 보기', [('s1-1', '화면 구성'), ('s1-2', '연결 계산서 8종')]),
  ('ch2', '2. 1분 따라하기', []),
- ('ch3', '3. 화면별 기능', [('s3-1', '머리'), ('s3-2', '분류 탭'), ('s3-3', '계산서 카드'), ('s3-4', '위생·배수'), ('s3-5', '공조·환기'), ('s3-6', '열원·반송'), ('s3-7', '근거 법령·설계기준'), ('s3-8', '휴대전화 화면')]),
+ ('ch3', '3. 화면별 기능', [('s3-1', '머리'), ('s3-2', '분류 탭'), ('s3-3', '계산서 카드'), ('s3-4', '위생·배수'), ('s3-5', '공조·환기'), ('s3-6', '열원·반송'), ('s3-7', '근거 법령·설계기준'), ('s3-8', '휴대전화 화면'), ('s3-9', '앱 설치')]),
  ('ch4', '4. 근거 해설', [('s4-1', '근거 체계'), ('s4-2', '고시 번호 읽는 법'), ('s4-3', '포털과 계산서의 역할')]),
  ('ch5', '5. 문제 해결·FAQ', []),
  ('ch6', '부록', [('a1', '버전 변경 내역'), ('a2', '용어')]),
@@ -57,7 +59,7 @@ S_.append(f"""{EXTRA_CSS}<section class="ch" id="ch0"><h2><span class="n">00</sp
 {K(T([
  ['대상 프로그램', f'{APP} <b>Ver {APPVER}</b>'],
  ['접속 주소', f'<a href="{APP_URL}" target="_blank" rel="noopener">manminkim-eng.github.io/mech-portal</a>'],
- ['매뉴얼 판', f'<b>{VER}</b> (초판) · {DATE} · 작성 김만민 건축사(㈜대성건축사사무소)'],
+ ['매뉴얼 판', f'<b>{VER}</b> · {DATE} · 작성 김만민 건축사(㈜대성건축사사무소)'],
  ['내려받기', f'<a href="{PDF}" download>PDF(A4)</a> · <a href="../index.html">포털 열기</a>'],
  ['근거 대조', f'국가법령정보(LawMCP) {CHECKED} — 건축물의 설비기준 등에 관한 규칙 · 기계설비 기술기준 · 건축물의 에너지절약설계기준'],
  ['범위', '안내 · 연결 도구 — 수치 기준과 계산은 각 계산서에서 합니다'],
@@ -72,7 +74,7 @@ S_.append(f"""<section class="ch" id="ch1"><h2><span class="n">01</span>한눈�
 {K(T([
  ['머리', '근거 조문 대조일 · 기계설비 기술기준 고시 번호, 포털 이름, 설명'],
  ['요약 5칸', f'계산서 {len(TOOLS)}종(위생 3 · 공조 3 · 열원 2) · KDS 31 · 고시 · PWA · A4'],
- ['탭 막대', '전체 · 위생·배수 · 공조·환기 · 열원·반송 / 근거 법령·기준 / 사용자 매뉴얼'],
+ ['탭 막대', '전체 · 위생·배수 · 공조·환기 · 열원·반송 / 근거 법령·기준 / 사용자 매뉴얼 / 앱 설치(설치할 수 있는 브라우저에서만)'],
  ['계산서 카드', '카드를 누르면 계산서, 「사용자 매뉴얼」을 누르면 그 계산서의 매뉴얼(새 창)'],
  ['근거 법령 · 설계기준', '법령 · 고시 · KDS · 참고 기준 5행 — 현행 번호 · 시행일 · 관련 조문 · 적용 도구'],
 ], ['영역', '내용']))}
@@ -82,7 +84,7 @@ S_.append(f"""<section class="ch" id="ch1"><h2><span class="n">01</span>한눈�
 S_.append(f"""<section class="ch" id="ch2"><h2><span class="n">02</span>1분 따라하기</h2>
 <p class="lead">예: 다중이용시설의 기계환기 풍량과 덕트 규격을 정하는 현장 — 포털에서 계산서를 찾아 들어가고 근거를 확인하는 순서입니다.</p>
 <ol class="steps">
-<li><b class="t">① 포털 열기</b>manminkim-eng.github.io/mech-portal — 휴대전화는 「홈 화면에 추가」로 설치합니다.</li>
+<li><b class="t">① 포털 열기</b>manminkim-eng.github.io/mech-portal — 탭 막대의 「앱 설치」로 홈 화면에 설치할 수 있습니다(<a href="#s3-9">3-9</a>).</li>
 <li><b class="t">② 분류</b>「공조·환기」 탭을 누르면 냉온수 배관 · 공조 덕트 · 기계환기설비 카드 3장만 남습니다(<a href="#s3-2">3-2</a>).</li>
 <li><b class="t">③ 근거 확인</b>기계환기설비 카드의 칩 「설비규칙 제11조 · 별표 1의6」 「기술기준 별표 3」을 확인합니다(<a href="#s3-5">3-5</a>).</li>
 <li><b class="t">④ 매뉴얼</b>카드 아래 「사용자 매뉴얼」 — 그 계산서의 매뉴얼이 새 창으로 열립니다.</li>
@@ -97,7 +99,7 @@ S_.append(f"""<section class="ch" id="ch3"><h2><span class="n">03</span>화면�
 <p>맨 위 표시줄은 근거 조문을 국가법령정보와 대조한 날짜({CHECKED})와 기계설비 기술기준의 현행 고시 번호입니다.</p>
 <h3 id="s3-2">3-2. 분류 탭</h3>
 {F('s03_tabs', '탭 막대')}
-<p>「전체 {len(TOOLS)}」 · 「위생·배수 3」 · 「공조·환기 3」 · 「열원·반송 2」는 누르면 해당 묶음만 보여 줍니다. 「근거 법령·기준」은 아래 근거표로 이동하고, 「사용자 매뉴얼」은 이 문서를 새 창으로 엽니다(온라인 전용).</p>
+<p>「전체 {len(TOOLS)}」 · 「위생·배수 3」 · 「공조·환기 3」 · 「열원·반송 2」는 누르면 해당 묶음만 보여 줍니다. 「근거 법령·기준」은 아래 근거표로 이동하고, 「사용자 매뉴얼」은 이 문서를 새 창으로 엽니다(온라인 전용). 「앱 설치」는 설치할 수 있는 브라우저에서만 나타납니다(<a href="#s3-9">3-9</a>).</p>
 <h3 id="s3-3">3-3. 계산서 카드</h3>
 {F('s07_card', '계산서 카드 구성')}
 <p>카드 위 번호 「M · 20」은 홈페이지 도구 허브의 공종 표기(M)와 개발 폴더 번호(20)입니다. 버전은 계산서의 현재 판이고, 칩은 그 계산서가 산출근거로 인용하는 법령 · 설계기준입니다.</p>
@@ -113,6 +115,16 @@ S_.append(f"""<section class="ch" id="ch3"><h2><span class="n">03</span>화면�
 <h3 id="s3-8">3-8. 휴대전화 화면</h3>
 <div class="tri"><div>{fig('s10_mobile_top', '첫 화면', narrow=True)}</div><div>{fig('s11_mobile_card', '카드', narrow=True)}</div><div>{fig('s12_mobile_law', '근거표', narrow=True)}</div></div>
 <p>좁은 화면에서는 카드가 한 줄씩 쌓이고, 근거표는 좌우로 밀어서 봅니다.</p>
+<h3 id="s3-9">3-9. 앱 설치</h3>
+{F('s13_install_bar', '첫 방문 설치 안내 띠')}
+{K(T([
+ ['크롬 · 엣지 · 삼성인터넷 등', '탭 막대 「앱 설치」 또는 안내 띠의 「설치」 → 브라우저 설치 창에서 설치'],
+ ['아이폰 · 아이패드', '「앱 설치」를 누르면 안내 상자 — 공유 단추 → 「홈 화면에 추가」 → 「추가」'],
+ ['안내 띠', '첫 방문 2초 뒤 한 번 표시 — 「닫기」를 누르면 그 세션 동안 다시 띄우지 않음'],
+ ['나타나지 않는 경우', '이미 설치한 앱 화면 · 설치를 지원하지 않는 브라우저(데스크톱 파이어폭스 등) · 설치를 막 거절한 직후'],
+ ['설치 범위', '이 포털(/mech-portal/)만 설치됩니다 — 카드에서 연 계산서는 앱 안의 브라우저 창으로 열리고, 계산서도 앱으로 쓰려면 각 계산서에서 설치합니다'],
+], ['구분', '방법']))}
+<div class="tri"><div>{fig('s14_ios_guide', '아이폰 설치 안내', narrow=True)}</div><div></div><div></div></div>
 </section>""")
 S_.append(f"""<section class="ch" id="ch4"><h2><span class="n">04</span>근거 해설</h2>
 <h3 id="s4-1">4-1. 근거 체계</h3>
@@ -131,6 +143,8 @@ S_.append(f"""<section class="ch" id="ch5"><h2><span class="n">05</span>문제 �
  ['포털에서 계산이 되나요', '아닙니다 — 카드를 눌러 각 계산서에서 계산합니다'],
  ['「사용자 매뉴얼」이 안 열려요', '매뉴얼은 온라인 전용입니다(오프라인 캐시에서 제외)'],
  ['수치 기준은 어디 있나요', '각 계산서의 산출근거표와 A4 계산서에 있습니다'],
+ ['「앱 설치」 단추가 안 보여요', '이미 설치했거나, 설치를 지원하지 않는 브라우저입니다 — 크롬 · 엣지에서 열어 보십시오(<a href="#s3-9">3-9</a>)'],
+ ['설치한 앱에서 계산서가 브라우저 창으로 열려요', '정상입니다 — 설치 범위가 포털뿐이라서입니다. 계산서도 각자 설치할 수 있습니다'],
  ['계산서마다 디자인이 달라요', '계산서는 각각 별도 저장소의 도구라 헤드 색과 판이 다를 수 있습니다'],
  ['화면이 예전 판이에요', '새로 고침(Ctrl+F5) 또는 앱을 닫았다 다시 여십시오 — 판이 바뀌면 캐시 이름이 바뀝니다'],
 ], ['증상', '해결']))}
@@ -138,7 +152,8 @@ S_.append(f"""<section class="ch" id="ch5"><h2><span class="n">05</span>문제 �
 S_.append(f"""<section class="ch" id="ch6"><h2><span class="n">부록</span></h2>
 <h3 id="a1">A1. 버전 변경 내역</h3>
 {K(T([
- [f'Ver 1.0.1 · 매뉴얼 {VER} ({DATE})', '사용자 매뉴얼 신설 · 탭 막대 「사용자 매뉴얼」 연결 · sw v1.0.1'],
+ [f'Ver 1.0.2 · 매뉴얼 {VER} ({DATE})', '탭 막대 「앱 설치」 · 아이폰 · 아이패드 설치 안내 · 첫 방문 안내 띠 · sw v1.0.2 — 매뉴얼 3-9 · FAQ 추가'],
+ [f'Ver 1.0.1 · 매뉴얼 Ver-1.0 ({DATE})', '사용자 매뉴얼 신설 · 탭 막대 「사용자 매뉴얼」 연결 · sw v1.0.1'],
  ['Ver 1.0.0 (2026-10-29)', '신설 — 계산서 8종 · 분류 3 · 근거 법령 · 설계기준표'],
 ], ['버전', '내용']))}
 <h3 id="a2">A2. 용어</h3>
