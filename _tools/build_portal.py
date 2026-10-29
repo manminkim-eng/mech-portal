@@ -8,7 +8,7 @@ MANMIN 기계설비 계산서 통합 포털 — index.html 생성기
 """
 import html, os, datetime
 
-VER = "1.0.0"
+VER = "1.0.1"   # 1.0.1 (2026-10-30) 사용자 매뉴얼 Ver-1.0 연결
 CHECKED = "2026-10-29"          # 근거 조문 대조일
 BASE = "https://manminkim-eng.github.io"
 
@@ -158,6 +158,7 @@ a{{color:inherit}}
 .tab.on{{color:#0b1220;background:var(--mech-lt);border-color:var(--mech-lt);font-weight:700}}
 .tn{{font-family:var(--f-mono);font-size:.78rem;opacity:.8}}
 .tab-law{{text-decoration:none}}
+.tab-man{{border-color:var(--gold);color:var(--gold-lt)}}.tab-man:hover{{border-color:var(--gold-lt);color:var(--t-high)}}
 
 /* GROUP */
 .grp{{margin-bottom:40px}}
@@ -255,6 +256,7 @@ td.num{{font-family:var(--f-mono);font-size:.84rem;white-space:nowrap}}
 <nav class="tabs" role="tablist" aria-label="분류">
   {tabs}
   <a class="tab tab-law" href="#law">근거 법령·기준</a>
+  <a class="tab tab-law tab-man" href="./manual/" target="_blank" rel="noopener" aria-label="포털 사용자 매뉴얼 (새 창)">사용자 매뉴얼</a>
 </nav>
 {"".join(group(*g) for g in GROUPS)}
 

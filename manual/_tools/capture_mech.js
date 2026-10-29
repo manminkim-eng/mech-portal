@@ -1,0 +1,62 @@
+// 기계설비 계산서 통합 포털 매뉴얼 화면 캡처 — usage: node capture_mech.js <repoDir> <outDir>  (1440×900 · DSF 1.25 · sw block)
+const {chromium}=require('playwright');const fs=require('fs');const path=require('path');const {setup,server}=require('./serve');
+const repo=path.resolve(process.argv[2]),out=path.resolve(process.argv[3]);fs.mkdirSync(out,{recursive:true});
+const VW=1440,VH=900,DSF=1.25,PORT=8961;
+const HELP=`window.__vis=e=>e&&e.getClientRects().length>0;
+window.__find=sel=>{if(sel.startsWith('nth:')){const [q,i]=sel.slice(4).split('|');return [...document.querySelectorAll(q)].filter(__vis)[+i]||null;}
+ if(sel.startsWith('card:')){const t=sel.slice(5);return [...document.querySelectorAll('.tcard')].find(c=>c.textContent.includes(t)&&__vis(c))||null;}
+ if(sel.startsWith('row:')){const t=sel.slice(4);return [...document.querySelectorAll('table tbody tr')].find(r=>r.textContent.includes(t)&&__vis(r))||null;}
+ for(const s of sel.split(',')){const e=[...document.querySelectorAll(s)].find(__vis);if(e)return e;}return null;};
+window.__tab=t=>{document.querySelector('.tab[data-tab="'+t+'"]').click();};`;
+const SHOTS=[
+ {id:'s01_overview',pre:"__tab('all');window.scrollTo(0,0)",clip:'viewport',m:[['.pill','근거 조문 대조일 · 고시 번호'],['.ttl','포털 이름'],['.stats','요약 5칸'],['.tabs','분류 탭 · 근거 · 매뉴얼'],['nth:.tcard|0','계산서 카드']]},
+ {id:'s02_header',clip:'.hd',m:[['.pill','근거 조문 대조일'],['.brand','ENGINEER KIM MANMIN'],['.ttl','기계설비 계산서 통합 포털'],['.lead','포털 설명']]},
+ {id:'s03_tabs',clip:'.tabs',m:[['nth:.tab|0','전체 8'],['nth:.tab|1','위생·배수 3'],['nth:.tab|2','공조·환기 3'],['nth:.tab|3','열원·반송 2'],['nth:.tab|4','근거 법령·기준'],['.tab-man','사용자 매뉴얼']]},
+ {id:'s04_plumb',clip:'#g-plumb',m:[['card:우수','20 건물 우수관경'],['card:위생배관','21 위생배관 관경'],['card:급탕','25 급탕량 · 보일러']]},
+ {id:'s05_air',clip:'#g-air',m:[['card:냉온수','22 냉온수 배관'],['card:덕트','23 공조 덕트'],['card:환기','26 기계환기설비']]},
+ {id:'s06_heat',clip:'#g-heat',m:[['card:펌프','24 설비 펌프'],['card:부하계산','27 냉난방 부하계산']]},
+ {id:'s07_card',clip:'nth:.tcard|0',m:[['nth:.tc-no|0','공종 번호(M · 폴더 번호)'],['nth:.tc-ver|0','계산서 현재 버전'],['nth:.tc-name|0','계산서 이름'],['nth:.tc-desc|0','계산 내용'],['nth:.tc-chips|0','근거 기준 칩'],['nth:.tc-man|0','사용자 매뉴얼(새 창)'],['nth:.tc-go|0','계산서 열기']]},
+ {id:'s08_law',clip:'#law',m:[['row:설비기준','설비규칙 — 2026-08-24 시행'],['row:기계설비 기술기준','기계설비 기술기준 — 제2026-360호'],['row:에너지절약','에너지절약설계기준 — 제2026-360호'],['row:KDS 31','KDS 31 설비 설계기준'],['row:참고 기준','참고 기준'],['.note','안내 — 수치 기준은 계산서']]},
+ {id:'s09_air_tab',pre:"__tab('air');window.scrollTo(0,0)",wait:600,clip:'viewport',post:"__tab('all')",m:[['nth:.tab|2','공조·환기만 보기'],['#g-air','공조·환기 카드 3장']]},
+];
+(async()=>{
+ const s=await server(repo,PORT);const b=await chromium.launch();
+ const ctx=await b.newContext({viewport:{width:VW,height:VH},deviceScaleFactor:DSF,serviceWorkers:'block',locale:'ko-KR'});await setup(ctx);
+ const pg=await ctx.newPage();const errs=[];pg.on('pageerror',e=>errs.push(e.message));
+ await pg.goto(`http://127.0.0.1:${PORT}/index.html`);await pg.evaluate(()=>document.fonts.ready);await pg.waitForTimeout(1200);await pg.evaluate(HELP);
+ const meta={};
+ for(const S of SHOTS){
+  if(S.pre){try{await pg.evaluate(S.pre);}catch(e){errs.push(S.id+' pre '+e.message);}}
+  await pg.waitForTimeout(S.wait||400);
+  if(S.clip!=='viewport'){await pg.evaluate(c=>{const e=__find(c);if(e){window.scrollTo(0,e.getBoundingClientRect().top+scrollY-40);}},S.clip);await pg.waitForTimeout(300);}
+  const info=await pg.evaluate(({S,VW,VH})=>{
+   const abs=e=>{const r=e.getBoundingClientRect();return {x:r.left+scrollX,y:r.top+scrollY,w:r.width,h:r.height};};
+   let clip;
+   if(S.clip==='viewport'){clip={x:0,y:scrollY,width:VW,height:VH};}
+   else{const el=__find(S.clip);if(!el)return {err:'clip '+S.clip};const a=abs(el);const P=12;clip={x:Math.max(0,a.x-P),y:Math.max(0,a.y-P),width:a.w+2*P,height:a.h+2*P};}
+   const marks=[];(S.m||[]).forEach(([sel,label],i)=>{const e=__find(sel);if(!e){marks.push({n:i+1,label,miss:sel});return;}const a=abs(e);
+     marks.push({n:i+1,label,x:+((a.x-clip.x)/clip.width*100).toFixed(2),y:+((a.y-clip.y)/clip.height*100).toFixed(2),w:+(Math.min(a.w,clip.x+clip.width-a.x)/clip.width*100).toFixed(2),h:+(Math.min(a.h,clip.y+clip.height-a.y)/clip.height*100).toFixed(2)});});
+   return {clip,marks};},{S,VW,VH});
+  if(info.err){errs.push(S.id+' '+info.err);continue;}
+  const c=info.clip;const cl={x:Math.max(0,c.x),y:Math.max(0,c.y),width:Math.min(c.width,VW-Math.max(0,c.x)),height:c.height};
+  if(S.clip==='viewport'){await pg.screenshot({path:path.join(out,S.id+'.png'),clip:{x:0,y:0,width:VW,height:VH}});}
+  else{await pg.screenshot({path:path.join(out,S.id+'.png'),clip:cl,fullPage:true});}
+  meta[S.id]={w:Math.round(cl.width),h:Math.round(cl.height),marks:info.marks};
+  if(S.post){try{await pg.evaluate(S.post);}catch(e){errs.push(S.id+' post '+e.message);}await pg.waitForTimeout(300);}
+ }
+ // 홈페이지 카드용 전체 화면 1800×1125 (1440×900 × 1.25)
+ await pg.evaluate(()=>window.scrollTo(0,0));await pg.waitForTimeout(300);
+ await pg.screenshot({path:path.join(out,'_full_1440.png'),clip:{x:0,y:0,width:VW,height:VH}});
+ const mctx=await b.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,serviceWorkers:'block',isMobile:true,hasTouch:true,locale:'ko-KR'});await setup(mctx);
+ const mp=await mctx.newPage();await mp.goto(`http://127.0.0.1:${PORT}/index.html`);await mp.waitForTimeout(1200);
+ await mp.screenshot({path:path.join(out,'s10_mobile_top.png')});meta['s10_mobile_top']={w:390,h:844,marks:[]};
+ await mp.evaluate(()=>{const e=document.getElementById('g-air');window.scrollTo(0,e.getBoundingClientRect().top+scrollY-12);});await mp.waitForTimeout(400);
+ await mp.screenshot({path:path.join(out,'s11_mobile_card.png')});meta['s11_mobile_card']={w:390,h:844,marks:[]};
+ await mp.evaluate(()=>{const e=document.getElementById('law');window.scrollTo(0,e.getBoundingClientRect().top+scrollY-12);});await mp.waitForTimeout(400);
+ await mp.screenshot({path:path.join(out,'s12_mobile_law.png')});meta['s12_mobile_law']={w:390,h:844,marks:[]};
+ const mob=await mp.evaluate(()=>({page:document.documentElement.scrollWidth,vw:innerWidth}));
+ fs.writeFileSync(path.join(out,'_marks.json'),JSON.stringify(meta,null,1));
+ const miss=[];Object.entries(meta).forEach(([k,v])=>v.marks.forEach(m=>{if(m.miss)miss.push(k+':'+m.miss);else if(m.x<0||m.y<0||m.x+m.w>100.5||m.y+m.h>100.5||m.w<=0||m.h<=0)miss.push(k+':OUT '+m.label);}));
+ console.log(JSON.stringify({mobile:mob,sizes:Object.fromEntries(Object.entries(meta).map(([k,v])=>[k,v.w+'x'+v.h])),miss,errs},null,1));
+ await b.close();s.close();
+})();
