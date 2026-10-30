@@ -1,7 +1,7 @@
 {
-  "name": "기계설비 계산서 통합 포털",
-  "short_name": "기계설비 포털",
-  "description": "기계설비 계산서 통합 포털 — 위생·배수 · 공조·환기 · 열원·반송 8종 by Engineer Kim Manmin · Ver 1.0.2",
+  "name": "기계설비 통합포털",
+  "short_name": "기계 통합포털",
+  "description": "기계설비 계산서 통합 포털 — 위생·배수 · 공조·환기 · 열원·반송 8종 by Engineer Kim Manmin · Ver 1.0.3",
   "start_url": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
