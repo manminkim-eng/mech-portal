@@ -1,4 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
+   v1.0.11 2026-10-31 — 긴급 복구: v1.0.10 배포 때 매뉴얼 생성기가 _tools/build_portal.py 를 실행해 index.html 을 10/30 이전 화면으로 덮어쓴 것을 직전 판으로 되돌림 · 캐시명 v1.0.11
    v1.0.10 2026-10-31 — 사용자 매뉴얼 캡처 재촬영 · 서체 Pretendard(매뉴얼은 sw 캐시 제외) · 캐시명 v1.0.10
    v1.0.3 2026-10-30 — 아이콘 교체(업로드 로고 ENGINEER) · 설치 이름 「기계설비 통합포털」 · 캐시명 v1.0.3
    v1.0.2 2026-10-30 — 앱 설치 단추 · 아이폰 안내 · 하단 안내 띠 · 캐시명 v1.0.2
@@ -21,8 +22,8 @@ const mmMatch = (req, opt) => caches.keys()
   .then((ks) => ks.reduce((p, k) => p.then((r) => r || caches.open(k).then((c) => c.match(req, opt))), Promise.resolve(undefined)))
   .then((r) => (r && r.type === 'opaque' && req && req.mode === 'cors') ? undefined : r);
 
-const CACHE_NAME   = 'manmin-mech-portal-v1.0.10';
-const STATIC_CACHE = 'manmin-mech-portal-static-v1.0.10';
+const CACHE_NAME   = 'manmin-mech-portal-v1.0.11';
+const STATIC_CACHE = 'manmin-mech-portal-static-v1.0.11';
 
 const PRECACHE_URLS = [
   './',
