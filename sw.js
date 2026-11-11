@@ -1,4 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
+   v1.0.14 2026-11-12 — 카드 판 22 냉온수 · 23 공조덕트 · 27 부하계산 Ver 6.1(정밀검토 B13 · §25-6-74) · 캐시명 v1.0.14
    v1.0.13 2026-11-11 — 카드 판 26 환기설비 Ver 6.1 · 근거 칩 KDS 31 25 20 · KDS 행 31 25 20 환기설비 추가 · 캐시명 v1.0.13
    v1.0.11 2026-10-31 — 긴급 복구: v1.0.10 배포 때 매뉴얼 생성기가 _tools/build_portal.py 를 실행해 index.html 을 10/30 이전 화면으로 덮어쓴 것을 직전 판으로 되돌림 · 캐시명 v1.0.11
    v1.0.10 2026-10-31 — 사용자 매뉴얼 캡처 재촬영 · 서체 Pretendard(매뉴얼은 sw 캐시 제외) · 캐시명 v1.0.10
@@ -23,8 +24,8 @@ const mmMatch = (req, opt) => caches.keys()
   .then((ks) => ks.reduce((p, k) => p.then((r) => r || caches.open(k).then((c) => c.match(req, opt))), Promise.resolve(undefined)))
   .then((r) => (r && r.type === 'opaque' && req && req.mode === 'cors') ? undefined : r);
 
-const CACHE_NAME   = 'manmin-mech-portal-v1.0.13';
-const STATIC_CACHE = 'manmin-mech-portal-static-v1.0.13';
+const CACHE_NAME   = 'manmin-mech-portal-v1.0.14';
+const STATIC_CACHE = 'manmin-mech-portal-static-v1.0.14';
 
 const PRECACHE_URLS = [
   './',
