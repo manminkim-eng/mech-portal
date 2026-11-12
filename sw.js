@@ -1,4 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
+   v1.0.21 2026-11-12 — 카드 판 26 환기 6.1.7(KDS 4.4(3) 다중 구역, 정밀검토 KDS 4.4(3) 다중 구역 · §25-6-84) · 캐시명 v1.0.21
    v1.0.20 2026-11-12 — 카드 판 26 환기 6.1.6(KDS 4.4(3), 정밀검토 KDS 남은 2건 · §25-6-83) · 캐시명 v1.0.20
    v1.0.19 2026-11-12 — 카드 판 8종 한 단계씩 · 포털 자체 Pretendard SRI(CDN 판 통일 · SRI, 정밀검토 C2 · §25-6-82) · 캐시명 v1.0.19
    v1.0.18 2026-11-12 — 카드 판 20 · 26 · 21 · 24 한 단계씩(KDS 원문 대조, 정밀검토 B12 · §25-6-81) · 캐시명 v1.0.18
@@ -30,8 +31,8 @@ const mmMatch = (req, opt) => caches.keys()
   .then((ks) => ks.reduce((p, k) => p.then((r) => r || caches.open(k).then((c) => c.match(req, opt))), Promise.resolve(undefined)))
   .then((r) => (r && r.type === 'opaque' && req && req.mode === 'cors') ? undefined : r);
 
-const CACHE_NAME   = 'manmin-mech-portal-v1.0.20';
-const STATIC_CACHE = 'manmin-mech-portal-static-v1.0.20';
+const CACHE_NAME   = 'manmin-mech-portal-v1.0.21';
+const STATIC_CACHE = 'manmin-mech-portal-static-v1.0.21';
 
 const PRECACHE_URLS = [
   './',
