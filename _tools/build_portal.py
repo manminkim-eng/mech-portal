@@ -8,7 +8,7 @@ MANMIN 기계설비 계산서 통합 포털 — index.html 생성기
 """
 import html, os, datetime
 
-VER = "1.0.18"   # 1.0.18 (2026-11-12) 카드 판 20 · 26 · 21 · 24 한 단계씩(KDS 원문 대조, 정밀검토 B12 · §25-6-81) / 1.0.17 (2026-11-12) 카드 판 20 · 21 · 25 · 22 · 23 · 26 · 24 · 27 한 단계씩(건물개요 원본 v1.3, 정밀검토 C10 · C4 · §25-6-80) / 1.0.16 (2026-11-12) 카드 판 20 · 21 6.1.1 · 22 · 26 6.1.2(입력값 경고 표시, 정밀검토 B10 · §25-6-79) / 1.0.15 (2026-11-12) 카드 판 20 · 21 · 25 · 24 → 6.1 · 22 · 27 · 23 · 26 6.1.1(건물개요 공통 원본, 정밀검토 B5 · B6 · §25-6-76 · 77) / 1.0.14 (2026-11-12) 카드 판 22 냉온수 · 23 공조덕트 · 27 부하계산 → 6.1(기준 표기 정리, 정밀검토 B13 · §25-6-74) / 1.0.13 (2026-11-11) 카드 판 26 환기설비 → 6.1(KDS 31 25 20 정정 · 근거 메모, §25-6-70) · 카드 근거 칩 · KDS 행에 31 25 20 환기설비 / 1.0.12 (2026-11-08) 매뉴얼 이미지 / 1.0.11 (2026-10-31) 생성기 동기화 — 24장 · 25-6 수정을 템플릿에 반영(출력 = 배포 index.html) / 종전 1.0.2 (2026-10-30) 앱 설치 단추 · 아이폰 안내 · 하단 안내 띠 / 1.0.1 사용자 매뉴얼 Ver-1.0 연결
+VER = "1.0.19"   # 1.0.19 (2026-11-12) 카드 판 8종 한 단계씩 · 포털 자체 Pretendard SRI(CDN 판 통일 · SRI, 정밀검토 C2 · §25-6-82) / 1.0.18 (2026-11-12) 카드 판 20 · 26 · 21 · 24 한 단계씩(KDS 원문 대조, 정밀검토 B12 · §25-6-81) / 1.0.17 (2026-11-12) 카드 판 20 · 21 · 25 · 22 · 23 · 26 · 24 · 27 한 단계씩(건물개요 원본 v1.3, 정밀검토 C10 · C4 · §25-6-80) / 1.0.16 (2026-11-12) 카드 판 20 · 21 6.1.1 · 22 · 26 6.1.2(입력값 경고 표시, 정밀검토 B10 · §25-6-79) / 1.0.15 (2026-11-12) 카드 판 20 · 21 · 25 · 24 → 6.1 · 22 · 27 · 23 · 26 6.1.1(건물개요 공통 원본, 정밀검토 B5 · B6 · §25-6-76 · 77) / 1.0.14 (2026-11-12) 카드 판 22 냉온수 · 23 공조덕트 · 27 부하계산 → 6.1(기준 표기 정리, 정밀검토 B13 · §25-6-74) / 1.0.13 (2026-11-11) 카드 판 26 환기설비 → 6.1(KDS 31 25 20 정정 · 근거 메모, §25-6-70) · 카드 근거 칩 · KDS 행에 31 25 20 환기설비 / 1.0.12 (2026-11-08) 매뉴얼 이미지 / 1.0.11 (2026-10-31) 생성기 동기화 — 24장 · 25-6 수정을 템플릿에 반영(출력 = 배포 index.html) / 종전 1.0.2 (2026-10-30) 앱 설치 단추 · 아이폰 안내 · 하단 안내 띠 / 1.0.1 사용자 매뉴얼 Ver-1.0 연결
 CHECKED = "2026-10-29"          # 근거 조문 대조일
 BASE = "https://manminkim-eng.github.io"
 
@@ -20,28 +20,28 @@ GROUPS = [
 
 # no, group, name, en, repo, ver, accent, desc(정성 서술 — 수치 기재 금지), basis(근거 칩)
 TOOLS = [
-    ("20", "plumb", "건물 우수관경", "Roof Drain", "Roof-Drain", "6.1.3", "#fbbf24",
+    ("20", "plumb", "건물 우수관경", "Roof Drain", "Roof-Drain", "6.1.4", "#fbbf24",
      "건축물 옥상 배수의 우수 수직관·수평관 관경을 지역 강우 자료로 산정합니다.",
      ["KDS 31 30 35", "기상청 1시간 최다강수량"]),
-    ("21", "plumb", "위생배관 관경", "Sanitary Piping", "Sanitary-Piping-System", "6.1.3", "#38bdf8",
+    ("21", "plumb", "위생배관 관경", "Sanitary Piping", "Sanitary-Piping-System", "6.1.4", "#38bdf8",
      "헌터 곡선과 하젠-윌리엄스 공식으로 급수·배수 관경을 산정합니다.",
      ["KDS 31 30 15", "KDS 31 30 25", "기술기준 별표 5 · 6 · 8", "IPC 2021 부록 E"]),
-    ("25", "plumb", "급탕량 · 보일러", "Hot Water Supply", "Hot-Water-Supply-System", "6.1.1", "#fb923c",
+    ("25", "plumb", "급탕량 · 보일러", "Hot Water Supply", "Hot-Water-Supply-System", "6.1.2", "#fb923c",
      "건물 용도별 급탕량과 급탕 보일러 출력을 산정합니다.",
      ["KDS 31 30 20", "기술기준 별표 5"]),
-    ("22", "air", "냉온수 배관", "Chilled · Hot Water Piping", "CHWS-STSTEM", "6.1.3", "#22d3ee",
+    ("22", "air", "냉온수 배관", "Chilled · Hot Water Piping", "CHWS-STSTEM", "6.1.4", "#22d3ee",
      "냉·온수 순환배관의 관경과 유속·마찰손실을 산정합니다.",
      ["KDS 31 25 25", "기술기준 별표 8"]),
-    ("23", "air", "공조 덕트", "Air Duct", "Air-Conditioning-Duct", "6.1.2", "#5a9ae8",
+    ("23", "air", "공조 덕트", "Air Duct", "Air-Conditioning-Duct", "6.1.3", "#5a9ae8",
      "공조·환기 덕트의 풍량별 규격을 산정합니다.",
      ["KDS 31 25 30", "기술기준 별표 9"]),
-    ("26", "air", "기계환기설비", "Mechanical Ventilation", "ventilation-equipment", "6.1.4", "#a78bfa",
+    ("26", "air", "기계환기설비", "Mechanical Ventilation", "ventilation-equipment", "6.1.5", "#a78bfa",
      "용도·면적·재실 인원으로 필요 환기량을 산정합니다.",
      ["설비규칙 제11조 · 별표 1의6", "기술기준 별표 3", "KDS 31 25 20"]),
-    ("24", "heat", "설비 펌프", "Booster Pump", "Booster-Pump", "6.1.2", "#60a5fa",
+    ("24", "heat", "설비 펌프", "Booster Pump", "Booster-Pump", "6.1.3", "#60a5fa",
      "전양정과 축동력을 계산해 펌프 용량을 선정합니다.",
      ["기술기준 별표 1 · 5 · 6", "에너지절약설계기준 제8조", "KS B 6318"]),
-    ("27", "heat", "냉난방 부하계산", "RTS Load Calculation", "Radiant-Time-Series-Method", "6.1.2", "#2dd4bf",
+    ("27", "heat", "냉난방 부하계산", "RTS Load Calculation", "Radiant-Time-Series-Method", "6.1.3", "#2dd4bf",
      "RTS(복사시계열)법으로 냉방 피크 부하와 난방 부하를 계산합니다.",
      ["ASHRAE RTS법", "에너지절약설계기준 별표 1 · 7"]),
 ]
@@ -129,7 +129,7 @@ page = f'''<!DOCTYPE html>
 <meta name="apple-mobile-web-app-title" content="기계포털">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" integrity="sha384-ei/b2Mz3F5J8nqTvpKS89CkzDCuD7Cc+/F+OsaPUKItzHgLNKnGq3rjtYq/B7RnO" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./assets/fonts/manmin-fonts.css"><!-- 로컬 폴백 폰트 -->
 <style>
