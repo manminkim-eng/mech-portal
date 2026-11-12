@@ -1,4 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
+   v1.0.17 2026-11-12 — 카드 판 20 · 21 · 25 · 22 · 23 · 26 · 24 · 27 한 단계씩(건물개요 원본 v1.3, 정밀검토 C10 · C4 · §25-6-80) · 캐시명 v1.0.17
    v1.0.16 2026-11-12 — 카드 판 20 · 21 6.1.1 · 22 · 26 6.1.2(입력값 경고 표시, 정밀검토 B10 · §25-6-79) · 캐시명 v1.0.16
    v1.0.15 2026-11-12 — 카드 판 20 · 21 · 25 · 24 Ver 6.1 · 22 · 27 · 23 · 26 6.1.1(정밀검토 B5 · B6 · §25-6-76 · 77) · 캐시명 v1.0.15
    v1.0.14 2026-11-12 — 카드 판 22 냉온수 · 23 공조덕트 · 27 부하계산 Ver 6.1(정밀검토 B13 · §25-6-74) · 캐시명 v1.0.14
@@ -26,8 +27,8 @@ const mmMatch = (req, opt) => caches.keys()
   .then((ks) => ks.reduce((p, k) => p.then((r) => r || caches.open(k).then((c) => c.match(req, opt))), Promise.resolve(undefined)))
   .then((r) => (r && r.type === 'opaque' && req && req.mode === 'cors') ? undefined : r);
 
-const CACHE_NAME   = 'manmin-mech-portal-v1.0.16';
-const STATIC_CACHE = 'manmin-mech-portal-static-v1.0.16';
+const CACHE_NAME   = 'manmin-mech-portal-v1.0.17';
+const STATIC_CACHE = 'manmin-mech-portal-static-v1.0.17';
 
 const PRECACHE_URLS = [
   './',
