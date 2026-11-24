@@ -3,13 +3,13 @@
 MANMIN 기계설비 계산서 통합 포털 — index.html 생성기
   · 도구·근거 데이터는 아래 TOOLS / LAWS 한 곳에서만 관리한다.
   · 원칙(2026-10-29 MIN 승인): 포털에는 근거 조문·시행일만 싣고, 수치 기준은 각 계산서에 둔다.
-  · 근거 확인: LawMCP(국가법령정보) 2026-10-29 조회. KDS 명칭은 「기계설비 기술기준」 별표 각 1.3(타 규정과의 관계) 표기.
+  · 근거 확인: LawMCP(국가법령정보) 2026-10-29 조회 · 2026-11-24 재대조(변동 없음). KDS 명칭은 「기계설비 기술기준」 별표 각 1.3(타 규정과의 관계) 표기.
 사용: python build_portal.py  →  ../index.html
 """
 import html, os, datetime
 
-VER = "1.0.22"   # 1.0.22 (2026-11-12) 카드 판 8종 한 단계씩(html2canvas SRI, 정밀검토 B8 · §25-6-87) / 1.0.21 (2026-11-12) 카드 판 26 환기 6.1.7(KDS 4.4(3) 다중 구역, 정밀검토 KDS 4.4(3) 다중 구역 · §25-6-84) / 1.0.20 (2026-11-12) 카드 판 26 환기 6.1.6(KDS 4.4(3), 정밀검토 KDS 남은 2건 · §25-6-83) / 1.0.19 (2026-11-12) 카드 판 8종 한 단계씩 · 포털 자체 Pretendard SRI(CDN 판 통일 · SRI, 정밀검토 C2 · §25-6-82) / 1.0.18 (2026-11-12) 카드 판 20 · 26 · 21 · 24 한 단계씩(KDS 원문 대조, 정밀검토 B12 · §25-6-81) / 1.0.17 (2026-11-12) 카드 판 20 · 21 · 25 · 22 · 23 · 26 · 24 · 27 한 단계씩(건물개요 원본 v1.3, 정밀검토 C10 · C4 · §25-6-80) / 1.0.16 (2026-11-12) 카드 판 20 · 21 6.1.1 · 22 · 26 6.1.2(입력값 경고 표시, 정밀검토 B10 · §25-6-79) / 1.0.15 (2026-11-12) 카드 판 20 · 21 · 25 · 24 → 6.1 · 22 · 27 · 23 · 26 6.1.1(건물개요 공통 원본, 정밀검토 B5 · B6 · §25-6-76 · 77) / 1.0.14 (2026-11-12) 카드 판 22 냉온수 · 23 공조덕트 · 27 부하계산 → 6.1(기준 표기 정리, 정밀검토 B13 · §25-6-74) / 1.0.13 (2026-11-11) 카드 판 26 환기설비 → 6.1(KDS 31 25 20 정정 · 근거 메모, §25-6-70) · 카드 근거 칩 · KDS 행에 31 25 20 환기설비 / 1.0.12 (2026-11-08) 매뉴얼 이미지 / 1.0.11 (2026-10-31) 생성기 동기화 — 24장 · 25-6 수정을 템플릿에 반영(출력 = 배포 index.html) / 종전 1.0.2 (2026-10-30) 앱 설치 단추 · 아이폰 안내 · 하단 안내 띠 / 1.0.1 사용자 매뉴얼 Ver-1.0 연결
-CHECKED = "2026-10-29"          # 근거 조문 대조일
+VER = "1.0.23"   # 1.0.23 (2026-11-24) 카드 판 8종 오늘 배포 판 · 매뉴얼 단추를 카드 링크와 형제로 분리 · 분류 단추 aria-pressed · aria-controls · 근거 대조일 2026-11-24(기계 3차 교차검증 P2 · P3 · P4 · P6) / 1.0.22 (2026-11-12) 카드 판 8종 한 단계씩(html2canvas SRI, 정밀검토 B8 · §25-6-87) / 1.0.21 (2026-11-12) 카드 판 26 환기 6.1.7(KDS 4.4(3) 다중 구역, 정밀검토 KDS 4.4(3) 다중 구역 · §25-6-84) / 1.0.20 (2026-11-12) 카드 판 26 환기 6.1.6(KDS 4.4(3), 정밀검토 KDS 남은 2건 · §25-6-83) / 1.0.19 (2026-11-12) 카드 판 8종 한 단계씩 · 포털 자체 Pretendard SRI(CDN 판 통일 · SRI, 정밀검토 C2 · §25-6-82) / 1.0.18 (2026-11-12) 카드 판 20 · 26 · 21 · 24 한 단계씩(KDS 원문 대조, 정밀검토 B12 · §25-6-81) / 1.0.17 (2026-11-12) 카드 판 20 · 21 · 25 · 22 · 23 · 26 · 24 · 27 한 단계씩(건물개요 원본 v1.3, 정밀검토 C10 · C4 · §25-6-80) / 1.0.16 (2026-11-12) 카드 판 20 · 21 6.1.1 · 22 · 26 6.1.2(입력값 경고 표시, 정밀검토 B10 · §25-6-79) / 1.0.15 (2026-11-12) 카드 판 20 · 21 · 25 · 24 → 6.1 · 22 · 27 · 23 · 26 6.1.1(건물개요 공통 원본, 정밀검토 B5 · B6 · §25-6-76 · 77) / 1.0.14 (2026-11-12) 카드 판 22 냉온수 · 23 공조덕트 · 27 부하계산 → 6.1(기준 표기 정리, 정밀검토 B13 · §25-6-74) / 1.0.13 (2026-11-11) 카드 판 26 환기설비 → 6.1(KDS 31 25 20 정정 · 근거 메모, §25-6-70) · 카드 근거 칩 · KDS 행에 31 25 20 환기설비 / 1.0.12 (2026-11-08) 매뉴얼 이미지 / 1.0.11 (2026-10-31) 생성기 동기화 — 24장 · 25-6 수정을 템플릿에 반영(출력 = 배포 index.html) / 종전 1.0.2 (2026-10-30) 앱 설치 단추 · 아이폰 안내 · 하단 안내 띠 / 1.0.1 사용자 매뉴얼 Ver-1.0 연결
+CHECKED = "2026-11-24"          # 근거 조문 대조일 (최초 2026-10-29 · 2026-11-24 lawmcp 재대조, 조문 · 번호 · 시행일 변동 없음)
 BASE = "https://manminkim-eng.github.io"
 
 GROUPS = [
@@ -20,28 +20,28 @@ GROUPS = [
 
 # no, group, name, en, repo, ver, accent, desc(정성 서술 — 수치 기재 금지), basis(근거 칩)
 TOOLS = [
-    ("20", "plumb", "건물 우수관경", "Roof Drain", "Roof-Drain", "6.1.5", "#fbbf24",
+    ("20", "plumb", "건물 우수관경", "Roof Drain", "Roof-Drain", "6.1.6", "#fbbf24",
      "건축물 옥상 배수의 우수 수직관·수평관 관경을 지역 강우 자료로 산정합니다.",
      ["KDS 31 30 35", "기상청 1시간 최다강수량"]),
-    ("21", "plumb", "위생배관 관경", "Sanitary Piping", "Sanitary-Piping-System", "6.1.5", "#38bdf8",
+    ("21", "plumb", "위생배관 관경", "Sanitary Piping", "Sanitary-Piping-System", "6.1.6", "#38bdf8",
      "헌터 곡선과 하젠-윌리엄스 공식으로 급수·배수 관경을 산정합니다.",
      ["KDS 31 30 15", "KDS 31 30 25", "기술기준 별표 5 · 6 · 8", "IPC 2021 부록 E"]),
-    ("25", "plumb", "급탕량 · 보일러", "Hot Water Supply", "Hot-Water-Supply-System", "6.1.3", "#fb923c",
+    ("25", "plumb", "급탕량 · 보일러", "Hot Water Supply", "Hot-Water-Supply-System", "6.1.4", "#fb923c",
      "건물 용도별 급탕량과 급탕 보일러 출력을 산정합니다.",
      ["KDS 31 30 20", "기술기준 별표 5"]),
-    ("22", "air", "냉온수 배관", "Chilled · Hot Water Piping", "CHWS-STSTEM", "6.1.5", "#22d3ee",
+    ("22", "air", "냉온수 배관", "Chilled · Hot Water Piping", "CHWS-STSTEM", "6.1.6", "#22d3ee",
      "냉·온수 순환배관의 관경과 유속·마찰손실을 산정합니다.",
      ["KDS 31 25 25", "기술기준 별표 8"]),
-    ("23", "air", "공조 덕트", "Air Duct", "Air-Conditioning-Duct", "6.1.4", "#5a9ae8",
+    ("23", "air", "공조 덕트", "Air Duct", "Air-Conditioning-Duct", "6.1.5", "#5a9ae8",
      "공조·환기 덕트의 풍량별 규격을 산정합니다.",
      ["KDS 31 25 30", "기술기준 별표 9"]),
-    ("26", "air", "기계환기설비", "Mechanical Ventilation", "ventilation-equipment", "6.1.8", "#a78bfa",
+    ("26", "air", "기계환기설비", "Mechanical Ventilation", "ventilation-equipment", "6.1.9", "#a78bfa",
      "용도·면적·재실 인원으로 필요 환기량을 산정합니다.",
      ["설비규칙 제11조 · 별표 1의6", "기술기준 별표 3", "KDS 31 25 20"]),
-    ("24", "heat", "설비 펌프", "Booster Pump", "Booster-Pump", "6.1.4", "#60a5fa",
+    ("24", "heat", "설비 펌프", "Booster Pump", "Booster-Pump", "6.1.5", "#60a5fa",
      "전양정과 축동력을 계산해 펌프 용량을 선정합니다.",
      ["기술기준 별표 1 · 5 · 6", "에너지절약설계기준 제8조", "KS B 6318"]),
-    ("27", "heat", "냉난방 부하계산", "RTS Load Calculation", "Radiant-Time-Series-Method", "6.1.4", "#2dd4bf",
+    ("27", "heat", "냉난방 부하계산", "RTS Load Calculation", "Radiant-Time-Series-Method", "6.1.5", "#2dd4bf",
      "RTS(복사시계열)법으로 냉방 피크 부하와 난방 부하를 계산합니다.",
      ["ASHRAE RTS법", "에너지절약설계기준 별표 1 · 7"]),
 ]
@@ -67,17 +67,17 @@ def card(t):
     ver = ".".join(ver.split(".")[:2])   # 카드 판은 앞 두 자리(작업지시서 §25-6-19)
     chips = "".join(f'<span class="chip">{e(b)}</span>' for b in basis)
     return f'''
-    <a class="tcard" data-g="{g}" href="../{repo}/" style="--acc:{acc}" aria-label="{e(name)} 계산서 열기">
+    <article class="tcard" data-g="{g}" style="--acc:{acc}">
       <div class="tc-top"><span class="tc-dot" aria-hidden="true"></span><span class="tc-no">M · {no}</span><span class="tc-ver">Ver {ver}</span></div>
       <h3 class="tc-name">{e(name)}</h3>
       <div class="tc-en">{e(en)}</div>
       <p class="tc-desc">{e(desc)}</p>
       <div class="tc-chips" aria-label="근거 기준">{chips}</div>
       <div class="tc-foot">
-        <span class="tc-man" role="link" tabindex="0" data-href="../{repo}/manual/">사용자 매뉴얼</span>
-        <span class="tc-go">계산서 열기 <span class="arw" aria-hidden="true">→</span></span>
+        <a class="tc-man" href="../{repo}/manual/" target="_blank" rel="noopener" aria-label="{e(name)} 사용자 매뉴얼 (새 창)">사용자 매뉴얼</a>
+        <a class="tc-go" href="../{repo}/" aria-label="{e(name)} 계산서 열기">계산서 열기 <span class="arw" aria-hidden="true">→</span></a>
       </div>
-    </a>'''
+    </article>'''
 
 def group(gid, gname, gsub):
     items = [t for t in TOOLS if t[1] == gid]
@@ -91,8 +91,9 @@ def group(gid, gname, gsub):
 law_rows = "".join(f'''
         <tr><th scope="row">{e(n)}</th><td>{e(k)}</td><td class="num">{e(d)}</td><td>{e(a)}</td><td class="num">{e(t)}</td></tr>''' for n, k, d, a, t in LAWS)
 
-tabs = f'<button class="tab on" data-tab="all" role="tab" aria-selected="true">전체 <span class="tn">{len(TOOLS)}</span></button>' + "".join(
-    f'<button class="tab" data-tab="{g}" role="tab" aria-selected="false">{e(n)} <span class="tn">{sum(1 for t in TOOLS if t[1]==g)}</span></button>' for g, n, _ in GROUPS)
+ALLG = " ".join("g-" + g for g, _, _ in GROUPS)
+tabs = f'<button class="tab on" type="button" data-tab="all" aria-pressed="true" aria-controls="{ALLG}">전체 <span class="tn">{len(TOOLS)}</span></button>' + "".join(
+    f'<button class="tab" type="button" data-tab="{g}" aria-pressed="false" aria-controls="g-{g}">{e(n)} <span class="tn">{sum(1 for t in TOOLS if t[1]==g)}</span></button>' for g, n, _ in GROUPS)
 
 VER2 = ".".join(VER.split(".")[:2])   # 화면 하단 판은 두 자리
 page = f'''<!DOCTYPE html>
@@ -313,6 +314,12 @@ td.num{{font-family:var(--f-mono);font-size:var(--fs-sm);white-space:nowrap}}
 .tc-man:hover,.tc-man:focus-visible{{background:rgba(255,255,255,.14);color:#fff}}
 .tc-go{{width:32px;height:32px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;background:rgba(255,255,255,.08);background:color-mix(in srgb,var(--acc) 14%,transparent);color:var(--acc);font-size:0}}
 .tc-go .arw{{font-size:var(--fs-body);font-weight:700}}
+/* v1.0.23 — 카드 링크 · 매뉴얼 링크 형제 분리(중첩 상호작용 제거): 계산서 열기 ::after 가 카드 전체를 덮고, 매뉴얼 단추는 그 위 */
+.tc-go{{text-decoration:none}}
+.tc-go::after{{content:"";position:absolute;inset:0;z-index:1;border-radius:18px}}
+.tc-go:focus-visible{{outline:none}}
+.tc-go:focus-visible::after{{outline:2px solid var(--gold);outline-offset:-2px}}
+.tc-man{{z-index:2}}
 @media (max-width:640px){{
   .brand img{{width:64px;height:64px}}
   .tab{{min-height:48px}}
@@ -347,7 +354,7 @@ td.num{{font-family:var(--f-mono);font-size:var(--fs-sm);white-space:nowrap}}
   <div class="st"><div class="st-n">A4</div><div class="st-l">계산서 인쇄</div></div>
 </div>
 
-<nav class="tabs" role="tablist" aria-label="분류">
+<nav class="tabs" aria-label="분류 · 바로가기">
   {tabs}
   <a class="tab tab-law" href="#law">근거 법령·기준</a>
   <a class="tab tab-law tab-man" href="./manual/" target="_blank" rel="noopener" aria-label="포털 사용자 매뉴얼 (새 창)">사용자 매뉴얼</a>
@@ -397,14 +404,9 @@ td.num{{font-family:var(--f-mono);font-size:var(--fs-sm);white-space:nowrap}}
   var tabs=document.querySelectorAll('.tab[data-tab]'),grps=document.querySelectorAll('.grp');
   tabs.forEach(function(t){{t.addEventListener('click',function(){{
     var k=t.getAttribute('data-tab');
-    tabs.forEach(function(x){{var on=x===t;x.classList.toggle('on',on);x.setAttribute('aria-selected',on?'true':'false');}});
+    tabs.forEach(function(x){{var on=x===t;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on?'true':'false');}});
     grps.forEach(function(g){{g.classList.toggle('off',k!=='all'&&g.getAttribute('data-g')!==k);}});
   }});}});
-  function go(el,ev){{ev.preventDefault();ev.stopPropagation();window.open(el.getAttribute('data-href'),'_blank','noopener');}}
-  document.querySelectorAll('.tc-man').forEach(function(m){{
-    m.addEventListener('click',function(ev){{go(m,ev);}});
-    m.addEventListener('keydown',function(ev){{if(ev.key==='Enter'||ev.key===' ')go(m,ev);}});
-  }});
   if('serviceWorker' in navigator){{window.addEventListener('load',function(){{navigator.serviceWorker.register('./sw.js').catch(function(){{}});}});}}
 
   /* 앱 설치 (v1.0.2) — 지원 브라우저: beforeinstallprompt · 아이폰/아이패드: 안내 상자 · 설치된 앱 화면: 숨김 */
@@ -439,5 +441,5 @@ td.num{{font-family:var(--f-mono);font-size:var(--fs-sm);white-space:nowrap}}
 '''
 if __name__ == "__main__":   # 2026-10-31 — runpy.run_path(매뉴얼 생성기)로 읽힐 때는 쓰지 않음
     out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "index.html")
-    open(out, "w", encoding="utf-8").write(page)
+    open(out, "w", encoding="utf-8", newline="\n").write(page)
     print("written", os.path.getsize(out), "bytes ·", len(TOOLS), "tools ·", len(LAWS), "laws")

@@ -1,4 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
+   v1.0.23 2026-11-24 — 카드 판 8종 오늘 배포 판 · 매뉴얼 단추 형제 분리 · 분류 단추 aria-pressed · 근거 대조일 2026-11-24(기계 3차 교차검증 P2~P6) · 캐시명 v1.0.23
    v1.0.22 2026-11-12 — 카드 판 8종 한 단계씩(html2canvas SRI, 정밀검토 B8 · §25-6-87) · 캐시명 v1.0.22
    v1.0.21 2026-11-12 — 카드 판 26 환기 6.1.7(KDS 4.4(3) 다중 구역, 정밀검토 KDS 4.4(3) 다중 구역 · §25-6-84) · 캐시명 v1.0.21
    v1.0.20 2026-11-12 — 카드 판 26 환기 6.1.6(KDS 4.4(3), 정밀검토 KDS 남은 2건 · §25-6-83) · 캐시명 v1.0.20
@@ -32,8 +33,8 @@ const mmMatch = (req, opt) => caches.keys()
   .then((ks) => ks.reduce((p, k) => p.then((r) => r || caches.open(k).then((c) => c.match(req, opt))), Promise.resolve(undefined)))
   .then((r) => (r && r.type === 'opaque' && req && req.mode === 'cors') ? undefined : r);
 
-const CACHE_NAME   = 'manmin-mech-portal-v1.0.22';
-const STATIC_CACHE = 'manmin-mech-portal-static-v1.0.22';
+const CACHE_NAME   = 'manmin-mech-portal-v1.0.23';
+const STATIC_CACHE = 'manmin-mech-portal-static-v1.0.23';
 
 const PRECACHE_URLS = [
   './',
