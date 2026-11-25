@@ -1,4 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
+   v1.0.24 (2026-11-25) — 헤더 고정 — 공통 원본 MM-HEADER v1.1 주입(태블릿 · 데스크톱만 — 폭 768px · 높이 600px 이상, 휴대폰은 고정 없음 · 머리+탭 sticky · 내리면 제목 한 줄+탭으로 접힘 · 다른 sticky 패널 top 보정) — 계산 · 인쇄 불변 · MIN 「추천안대로 승인」 · 「추천안대로 진행해줘」(모바일 제외) · 캐시명 v1.0.24 (종전 v1.0.23)
    v1.0.23 2026-11-24 — 카드 판 8종 오늘 배포 판 · 매뉴얼 단추 형제 분리 · 분류 단추 aria-pressed · 근거 대조일 2026-11-24(기계 3차 교차검증 P2~P6) · 캐시명 v1.0.23
    v1.0.22 2026-11-12 — 카드 판 8종 한 단계씩(html2canvas SRI, 정밀검토 B8 · §25-6-87) · 캐시명 v1.0.22
    v1.0.21 2026-11-12 — 카드 판 26 환기 6.1.7(KDS 4.4(3) 다중 구역, 정밀검토 KDS 4.4(3) 다중 구역 · §25-6-84) · 캐시명 v1.0.21
@@ -33,8 +34,8 @@ const mmMatch = (req, opt) => caches.keys()
   .then((ks) => ks.reduce((p, k) => p.then((r) => r || caches.open(k).then((c) => c.match(req, opt))), Promise.resolve(undefined)))
   .then((r) => (r && r.type === 'opaque' && req && req.mode === 'cors') ? undefined : r);
 
-const CACHE_NAME   = 'manmin-mech-portal-v1.0.23';
-const STATIC_CACHE = 'manmin-mech-portal-static-v1.0.23';
+const CACHE_NAME   = 'manmin-mech-portal-v1.0.24';
+const STATIC_CACHE = 'manmin-mech-portal-static-v1.0.24';
 
 const PRECACHE_URLS = [
   './',
