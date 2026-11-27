@@ -131,6 +131,27 @@ td.num{font-family:var(--f-mono);font-size:var(--fs-sm);white-space:nowrap}
 .note{margin-top:14px;padding:14px 16px;border:1px solid var(--line2);border-left:3px solid var(--gold);border-radius:var(--radius);background:rgba(216,172,80,.05);font-size:var(--fs-sm)}
 .note b{color:var(--gold-lt)}
 .note a{color:var(--mech-lt)}
+.law a.tno{color:inherit;text-decoration:none}
+.law a.tno:hover{color:var(--pa-lt);text-decoration:underline}
+/* 2026-11-27 휴대폰(640px 이하) — 근거 표를 법령별 카드로(글자 그대로, 표시만) */
+@media (max-width:640px){
+  .law .tbl-wrap{overflow:visible;border:0;background:transparent}
+  .law table{min-width:0;display:block}
+  .law thead{display:none}
+  .law tbody{display:grid;gap:10px}
+  .law tbody tr{display:block;background:var(--bg-card);border:1px solid var(--line);border-left:3px solid var(--pa);border-radius:var(--radius);padding:14px 14px 12px}
+  .law tbody th,.law tbody td{display:block;padding:0;border:0;min-width:0;white-space:normal}
+  .law tbody th{font-size:var(--fs-body);line-height:1.45;word-break:keep-all;margin-bottom:6px}
+  .law tbody td:nth-of-type(1){display:inline-block;font-family:var(--f-kr);font-size:var(--fs-cap);color:var(--pa-lt);border:1px solid var(--line2);border-radius:6px;padding:1px 7px;margin:0 6px 6px 0}
+  .law tbody td:nth-of-type(2){display:inline;font-family:var(--f-kr);font-size:var(--fs-cap);color:var(--t-sub);word-break:keep-all}
+  .law tbody td:nth-of-type(2) .nw{font-family:var(--f-mono)}
+  .law td.arts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;font-size:var(--fs-sm);line-height:1.55}
+  .law td.arts .sep,.law td.tools .sep{display:none}
+  .law td.arts .art{background:var(--bg-deep);border:1px solid var(--line2);border-radius:6px;padding:3px 8px;word-break:keep-all}
+  .law td.tools{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+  .law td.tools::before{content:"적용 도구";font:600 var(--fs-cap) var(--f-kr);color:var(--t-sub);margin-right:4px}
+  .law a.tno{font:700 var(--fs-sm) var(--f-mono);min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;color:var(--pa-lt);background:rgba(var(--pa-rgb),.12);border:1px solid rgba(var(--pa-rgb),.35)}
+}
 
 /* FOOTER */
 .ft{margin-top:48px;padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:var(--fs-sm);color:var(--t-sub)}
@@ -373,11 +394,11 @@ td.num{font-family:var(--f-mono);font-size:var(--fs-sm);white-space:nowrap}
     <table>
       <thead><tr><th scope="col">법령 · 기준</th><th scope="col">구분</th><th scope="col">현행</th><th scope="col">관련 조문 · 코드</th><th scope="col">적용 도구</th></tr></thead>
       <tbody>
-        <tr><th scope="row">건축물의 설비기준 등에 관한 규칙</th><td>국토교통부령</td><td class="num">2026-08-24 시행</td><td>제11조(공동주택 및 다중이용시설의 환기설비기준 등) · 별표 1의6</td><td class="num">26</td></tr>
-        <tr><th scope="row">기계설비 기술기준</th><td>국토교통부 고시</td><td class="num">제2026-360호 · 2026-07-08 시행</td><td>제8조 · 별표 1 · 3 · 5 · 6 · 8 · 9</td><td class="num">21 · 22 · 23 · 24 · 25 · 26</td></tr>
-        <tr><th scope="row">건축물의 에너지절약설계기준</th><td>국토교통부 고시</td><td class="num">제2026-360호 · 2026-07-08 시행</td><td>제8조(설계용 외기조건 · 펌프 효율) · 별표 1 · 별표 7</td><td class="num">24 · 27</td></tr>
-        <tr><th scope="row">KDS 31 설비 설계기준</th><td>국가건설기준(KCSC)</td><td class="num">국가건설기준센터 현행본</td><td>31 25 20 환기설비 · 31 25 25 배관설비 · 31 25 30 덕트설비 · 31 30 15 급수설비 · 31 30 20 급탕설비 · 31 30 25 배수통기설비 · 31 30 35 우수설비</td><td class="num">20 · 21 · 22 · 23 · 25 · 26</td></tr>
-        <tr><th scope="row">참고 기준</th><td>국외 · 기상자료</td><td class="num">각 계산서 표기 판</td><td>ASHRAE Handbook—Fundamentals(RTS법) · IPC 2021 부록 E · KS B 6318 · 기상청 1시간 최다강수량</td><td class="num">20 · 21 · 24 · 27</td></tr>
+        <tr><th scope="row">건축물의 설비기준 등에 관한 규칙</th><td>국토교통부령</td><td class="num">2026-08-24 시행</td><td class="arts"><span class="art">제11조(공동주택 및 다중이용시설의 환기설비기준 등)</span><span class="sep"> · </span><span class="art">별표 1의6</span></td><td class="num tools"><a class="tno" href="../ventilation-equipment/" aria-label="26번 계산서 열기">26</a></td></tr>
+        <tr><th scope="row">기계설비 기술기준</th><td>국토교통부 고시</td><td class="num">제2026-360호 · 2026-07-08 시행</td><td class="arts"><span class="art">제8조</span><span class="sep"> · </span><span class="art">별표 1 · 3 · 5 · 6 · 8 · 9</span></td><td class="num tools"><a class="tno" href="../Sanitary-Piping-System/" aria-label="21번 계산서 열기">21</a><span class="sep"> · </span><a class="tno" href="../CHWS-STSTEM/" aria-label="22번 계산서 열기">22</a><span class="sep"> · </span><a class="tno" href="../Air-Conditioning-Duct/" aria-label="23번 계산서 열기">23</a><span class="sep"> · </span><a class="tno" href="../Booster-Pump/" aria-label="24번 계산서 열기">24</a><span class="sep"> · </span><a class="tno" href="../Hot-Water-Supply-System/" aria-label="25번 계산서 열기">25</a><span class="sep"> · </span><a class="tno" href="../ventilation-equipment/" aria-label="26번 계산서 열기">26</a></td></tr>
+        <tr><th scope="row">건축물의 에너지절약설계기준</th><td>국토교통부 고시</td><td class="num">제2026-360호 · 2026-07-08 시행</td><td class="arts"><span class="art">제8조(설계용 외기조건 · 펌프 효율)</span><span class="sep"> · </span><span class="art">별표 1</span><span class="sep"> · </span><span class="art">별표 7</span></td><td class="num tools"><a class="tno" href="../Booster-Pump/" aria-label="24번 계산서 열기">24</a><span class="sep"> · </span><a class="tno" href="../Radiant-Time-Series-Method/" aria-label="27번 계산서 열기">27</a></td></tr>
+        <tr><th scope="row">KDS 31 설비 설계기준</th><td>국가건설기준(KCSC)</td><td class="num">국가건설기준센터 현행본</td><td class="arts"><span class="art">31 25 20 환기설비</span><span class="sep"> · </span><span class="art">31 25 25 배관설비</span><span class="sep"> · </span><span class="art">31 25 30 덕트설비</span><span class="sep"> · </span><span class="art">31 30 15 급수설비</span><span class="sep"> · </span><span class="art">31 30 20 급탕설비</span><span class="sep"> · </span><span class="art">31 30 25 배수통기설비</span><span class="sep"> · </span><span class="art">31 30 35 우수설비</span></td><td class="num tools"><a class="tno" href="../Roof-Drain/" aria-label="20번 계산서 열기">20</a><span class="sep"> · </span><a class="tno" href="../Sanitary-Piping-System/" aria-label="21번 계산서 열기">21</a><span class="sep"> · </span><a class="tno" href="../CHWS-STSTEM/" aria-label="22번 계산서 열기">22</a><span class="sep"> · </span><a class="tno" href="../Air-Conditioning-Duct/" aria-label="23번 계산서 열기">23</a><span class="sep"> · </span><a class="tno" href="../Hot-Water-Supply-System/" aria-label="25번 계산서 열기">25</a><span class="sep"> · </span><a class="tno" href="../ventilation-equipment/" aria-label="26번 계산서 열기">26</a></td></tr>
+        <tr><th scope="row">참고 기준</th><td>국외 · 기상자료</td><td class="num">각 계산서 표기 판</td><td class="arts"><span class="art">ASHRAE Handbook—Fundamentals(RTS법)</span><span class="sep"> · </span><span class="art">IPC 2021 부록 E</span><span class="sep"> · </span><span class="art">KS B 6318</span><span class="sep"> · </span><span class="art">기상청 1시간 최다강수량</span></td><td class="num tools"><a class="tno" href="../Roof-Drain/" aria-label="20번 계산서 열기">20</a><span class="sep"> · </span><a class="tno" href="../Sanitary-Piping-System/" aria-label="21번 계산서 열기">21</a><span class="sep"> · </span><a class="tno" href="../Booster-Pump/" aria-label="24번 계산서 열기">24</a><span class="sep"> · </span><a class="tno" href="../Radiant-Time-Series-Method/" aria-label="27번 계산서 열기">27</a></td></tr>
       </tbody>
     </table>
   </div>
